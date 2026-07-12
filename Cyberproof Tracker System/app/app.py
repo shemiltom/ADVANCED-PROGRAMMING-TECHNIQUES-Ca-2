@@ -1,14 +1,18 @@
 # app.py
-from flask import Flask
+from flask import Flask, render_template
 from models import db
+from routes import register_routes
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nexus.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cyberproof.db'
 db.init_app(app)
+
+register_routes(app)
 
 @app.route('/')
 def home():
-    return "api working fine"
+    return render_template('index.html')
 
 # Create tables
 with app.app_context():
