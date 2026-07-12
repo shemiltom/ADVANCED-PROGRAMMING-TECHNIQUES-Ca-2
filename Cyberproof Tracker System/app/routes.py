@@ -9,31 +9,30 @@ def register_routes(app):
         new_issue = Issue(
             title=data['title'],
             description=data['description'],
-            severity=data['severity'],
+            priority=data['priority'],
             project_id=data['project_id']
         )
         db.session.add(new_issue)
         db.session.commit()
-        return jsonify({"message": "Issue tracked successfully"}), 201
+        return jsonify({"message": "Issue added successfully"}), 201
 
     @app.route('/issues', methods=['GET'])
     def get_issues():
         issues = Issue.query.all()
-        return jsonify([{'id': i.id, 'title': i.title, 'severity': i.severity} for i in issues])
+        return jsonify([{'id': i.id, 'title': i.title, 'priority': i.priority} for i in issues])
     
-    # Update an issue status
+
     @app.route('/issues/<int:id>', methods=['PUT'])
     def update_issue(id):
         issue = Issue.query.get_or_404(id)
         data = request.get_json()
         issue.status = data.get('status', issue.status)
         db.session.commit()
-        return jsonify({"message": "Issue updated"})
+        return jsonify({"message": "Issue updated successfully"})
 
-# Delete an issue
     @app.route('/issues/<int:id>', methods=['DELETE'])
     def delete_issue(id):
         issue = Issue.query.get_or_404(id)
         db.session.delete(issue)
         db.session.commit()
-        return jsonify({"message": "Issue deleted"})
+        return jsonify({"message": "Issue deleted successfully"})
