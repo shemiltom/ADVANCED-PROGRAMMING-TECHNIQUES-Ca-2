@@ -57,10 +57,10 @@ def register_routes(app):
         if priority_filter:
             query = query.filter(Issue.priority == priority_filter)
 
-        if sort == 'datetime':
-            query = query.order_by(Issue.datetime.asc())    
+        if sort == 'createddate':
+            query = query.order_by(Issue.createddate.asc())    
         issues = query.all()
-        return jsonify([{'id': i.id, 'title': i.title, 'priority': i.priority, 'status': i.status, 'datetime': i.datetime} for i in issues])
+        return jsonify([{'id': i.id, 'title': i.title, 'priority': i.priority, 'status': i.status, 'createddate': i.createddate} for i in issues])
 
     @app.route('/issues/<int:id>', methods=['PUT'])
     def update_issue(id):

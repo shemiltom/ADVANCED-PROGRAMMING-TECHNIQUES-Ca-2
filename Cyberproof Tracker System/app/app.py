@@ -1,5 +1,6 @@
 # app.py
 from flask import Flask, render_template
+from sqlalchemy import text
 from models import db
 from routes import register_routes
 
@@ -12,7 +13,7 @@ register_routes(app)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return text("hello")
 
 # Create tables
 with app.app_context():
