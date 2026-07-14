@@ -1,7 +1,31 @@
 from flask import request, jsonify
-from models import db, Issue
+from models import db, Issue, Project
 
 def register_routes(app):
+    @app.route('/projects', methods=['POST'])
+    def add_project():
+        data = request.get_json()
+        new_project = Project(
+            name=data['name'],
+            description=data['description']
+        )
+        db.session.add(new_project)
+        db.session.commit()
+        return jsonify({"message": "Project created successfully", "id": new_project.id}), 201
+
+    @app.route('/projects', methods=['GET'])
+    def get_projects():
+        projects = Project.query.all()
+        return jsonify([{'id': p.id, 'name': p.name, 'description': p.description} for p in projects])
+    
+    @app.route('/projects/<int:id>', methods=['DELETE'])
+    def delete_project(id):
+        project = Project.query.get_or_404(id)
+        for issue in project.issues:
+            db.session.delete(issue)
+            db.session.delete(project)
+            db.session.commit()
+            return jsonify({"message": "Project and all associated issues are deleted"})
     
     @app.route('/issues', methods=['POST'])
     def add_issue():
@@ -14,7 +38,7 @@ def register_routes(app):
         )
         db.session.add(new_issue)
         db.session.commit()
-        return jsonify({"message": "Issue added successfully"}), 201
+        return jsonify({"message": "Issue added successfully"})
 
     @app.route('/issues', methods=['GET'])
     def get_issues():

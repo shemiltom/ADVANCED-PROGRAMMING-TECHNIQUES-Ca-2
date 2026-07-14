@@ -7,7 +7,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    issues = db.relationship('Issue', backref='project', lazy=True)
+    issues = db.relationship('Issue', backref='project')
 
 class Issue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
