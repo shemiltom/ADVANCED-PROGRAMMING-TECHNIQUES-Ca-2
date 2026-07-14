@@ -11,7 +11,7 @@ def register_routes(app):
         )
         db.session.add(new_project)
         db.session.commit()
-        return jsonify({"message": "Project created successfully", "id": new_project.id}), 201
+        return jsonify({"message": "Project created successfully", "id": new_project.id})
 
     @app.route('/projects', methods=['GET'])
     def get_projects():
@@ -23,9 +23,9 @@ def register_routes(app):
         project = Project.query.get_or_404(id)
         for issue in project.issues:
             db.session.delete(issue)
-            db.session.delete(project)
-            db.session.commit()
-            return jsonify({"message": "Project and all associated issues are deleted"})
+        db.session.delete(project)
+        db.session.commit()
+        return jsonify({"message": "Project and all associated issues are deleted"})
     
     @app.route('/issues', methods=['POST'])
     def add_issue():
@@ -39,12 +39,28 @@ def register_routes(app):
         db.session.add(new_issue)
         db.session.commit()
         return jsonify({"message": "Issue added successfully"})
-
+    
     @app.route('/issues', methods=['GET'])
     def get_issues():
-        issues = Issue.query.all()
-        return jsonify([{'id': i.id, 'title': i.title, 'priority': i.priority} for i in issues])
-    
+        search = request.args.get('search')
+        sort = request.args.get('sort')
+        status_filter = request.args.get('status')
+        priority_filter = request.args.get('priority')
+
+        query = Issue.query
+
+        if search:
+            query = query.filter(Issue.title.ilike(f'%{search}%') | Issue.description.ilike(f'%{search}%'))
+
+        if status_filter:
+            query = query.filter(Issue.status == status_filter)
+        if priority_filter:
+            query = query.filter(Issue.priority == priority_filter)
+
+        if sort == 'datetime':
+            query = query.order_by(Issue.datetime.asc())    
+        issues = query.all()
+        return jsonify([{'id': i.id, 'title': i.title, 'priority': i.priority, 'status': i.status, 'datetime': i.datetime} for i in issues])
 
     @app.route('/issues/<int:id>', methods=['PUT'])
     def update_issue(id):
