@@ -1,7 +1,7 @@
 # Cyberproof Tracker System
 
 ## 1. Project Overview
-The **Cyberproof Tracker System** is a tool that provides a  vulnerability and issue tracking application. It to plan projects, record issues. The system has been built with utmost data integrity, the backend being made of Flask and the front end being dynamic for live interaction.
+The **Cyberproof Tracker System** is a tool that provides a  vulnerability and issue tracking application. It to make projects, record vulnerability issues. The system has been built with  integrity, the backend being made of Flask.
 
 ## 2. Requirements & Implementation
 Manages SQLite database with SQLAlchemy (ORM).
@@ -12,7 +12,7 @@ Server-side search and filtering for issues
 
 ## 3. How the System Works
 Models (models.py) -- the data structure (tables for Projects and Issues).
-Routes (routes.py): handles the "waiter" role by accepting requests from the front end and running the commands in the database.
+Routes (routes.py): handles by accepting requests from the front end and running the commands in the database.
 The engine that launches the server and initializes the database is called App (app.py).
 
 
@@ -29,7 +29,7 @@ To test this system, set your Postman requests as follows:
 | **Delete** | DELETE | `/issues/<id>` | Removes record from database |
 
 ## 5. Installation
-1. Clone: `git clone [YOUR_GITHUB_LINK]`
+1. Clone: `git clone https://github.com/shemiltom/ADVANCED-PROGRAMMING-TECHNIQUES-Ca-2`
 2. Install: `pip install flask flask-sqlalchemy`
 3. Run: `python app.py`
 4. Access: `http://127.0.0.1:5000`
