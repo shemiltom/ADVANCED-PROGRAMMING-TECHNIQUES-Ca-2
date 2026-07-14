@@ -13,7 +13,7 @@ register_routes(app)
 
 @app.route('/')
 def home():
-    return text("hello")
+    return render_template('index.html')
 
 # Create tables
 with app.app_context():
