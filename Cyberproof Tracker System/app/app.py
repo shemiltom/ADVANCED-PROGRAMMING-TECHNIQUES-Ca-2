@@ -15,7 +15,6 @@ register_routes(app)
 def home():
     return render_template('index.html')
 
-# Create tables
 with app.app_context():
     db.create_all()
 
